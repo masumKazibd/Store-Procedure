@@ -1,0 +1,4 @@
+Scaffolding Database Context
+---------------------------
+
+Scaffold-DbContext "Server=MKDESIGNBD\SQLEXPRESS;Database=spDB;Trusted_Connection=True;MultipleActiveResultSets=true" Microsoft.EntityFrameworkCore.SqlServer -OutputDir Models
