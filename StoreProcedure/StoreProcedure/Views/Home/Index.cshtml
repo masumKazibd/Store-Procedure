@@ -13,7 +13,7 @@
                         <button type="button" class="btn btn-info btn-sm" onclick="newRow()">Add</button>
                     </th>
                     <th colspan="3">
-                        <form class="d-flex justify-content-end">
+                        <form class="d-flex justify-content-end" asp-action="Index" asp-controller="Home">
                             <input name="name" class="me-auto form-control form-control-sm" />
                             <button type="submit" class="ms-1 btn-primary btn-sm">Search</button>
                             <button type="button" asp-action="Index" 
@@ -43,15 +43,31 @@
                     </td>
                     </form>
                 </tr>
-                @foreach (var item in Model)
+                @for (int i = 0; i< Model.Count; i++)
                 {
-                    <tr>
-                        <td>@Html.DisplayFor(x=>item.CustomerId)</td>
-                        <td>@Html.DisplayFor(x=>item.Name)</td>
-                        <td>@Html.DisplayFor(x=>item.Country)</td>
+                    <tr id="show-row-@i" class="show-row">
+                        <td>@Model[i].CustomerId</td>
+                        <td>@Model[i].Name</td>
+                        <td>@Model[i].Country</td>
                         <td>
-                            <a><i class="fa fa-edit"></i></a>
+                            <form method="post" asp-action="Delete" asp-controller="Home">
+                                <button type="button" class="btn btn-success btn-sm" onclick="editRow('@i')">Edit</button>
+                                <input asp-for="@Model[i].CustomerId" name="customerId" class="form-control form-control-sm" type="hidden"/>
+                                <button type="submit" class="btn btn-danger btn-sm">Delete</button>
+                            </form>
                         </td>
+                    </tr>
+                    <tr id="edit-row-@i" class="edit-row">
+                        <form method="post" asp-action="Edit" asp-controller="Home">
+                            <td><input asp-for="@Model[i].CustomerId" name="customerId" class="form-control form-control-sm" /></td>
+                        <td><input asp-for="@Model[i].Name" name="name" class="form-control form-control-sm" /></td>
+                        <td><input asp-for="@Model[i].Country" name="country" class="form-control form-control-sm" /></td>
+                        <td>
+                            <button type="submit" class="btn btn-success btn-sm">Update</button>
+                            <button type="button" asp-action="Index" asp-controller="Home"
+                            class="mas-1 btn btn-warning btn-sm">Clear</button>
+                        </td>
+                        </form>
                     </tr>
                 }
             </tbody>
@@ -63,6 +79,12 @@
          $(document).ready(() => {
              $(".edit-row").hide();
          })
+        function editRow(index) {
+            $(".edit-row").hide();
+            $("#show-row-" + index).hide();
+            $("#edit-row-" + index).show();
+
+        }
          function newRow() {
              $(".edit-row").hide();
              $("#new-row").show();
